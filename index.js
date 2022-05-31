@@ -3,17 +3,17 @@
  * 
  * @author Mohammad Fares <faressoft.com@gmail.com>
  */
- 
+
 'use strict';
 
-var _ = require('lodash');
-var chalk = require('chalk');
-var cliCursor = require('cli-cursor');
-var figures = require('figures');
-var Base = require('inquirer/lib/prompts/base');
-var Choices = require('inquirer/lib/objects/choices');
-var observe = require('inquirer/lib/utils/events');
-var Paginator = require('inquirer/lib/utils/paginator');
+import _ from 'lodash';
+import chalk from 'chalk';
+import cliCursor from 'cli-cursor';
+import figures from 'figures';
+import Base from 'inquirer/lib/prompts/base.js';
+import Choices from 'inquirer/lib/objects/choices.js';
+import observe from 'inquirer/lib/utils/events.js';
+import Paginator from 'inquirer/lib/utils/paginator.js';
 
 /**
  * CheckboxPlusPrompt
@@ -79,7 +79,7 @@ class CheckboxPlusPrompt extends Base {
 
     this.done = callback;
 
-    this.executeSource().then(function(result) {
+    this.executeSource().then(function (result) {
 
       var events = observe(self.rl);
 
@@ -116,7 +116,7 @@ class CheckboxPlusPrompt extends Base {
       self.render();
 
     });
-    
+
     return this;
 
   }
@@ -148,8 +148,8 @@ class CheckboxPlusPrompt extends Base {
     this.lastSourcePromise = sourcePromise;
     this.searching = true;
 
-    sourcePromise.then(function(choices) {
-      
+    sourcePromise.then(function (choices) {
+
       // Is not the last issued promise
       if (self.lastSourcePromise !== sourcePromise) {
         return;
@@ -162,7 +162,7 @@ class CheckboxPlusPrompt extends Base {
       self.choices = new Choices(choices, self.answers);
 
       // Foreach choice
-      self.choices.forEach(function(choice) {
+      self.choices.forEach(function (choice) {
 
         // Is the current choice included in the current checked choices
         if (_.findIndex(self.value, _.isEqual.bind(null, choice.value)) != -1) {
@@ -226,7 +226,7 @@ class CheckboxPlusPrompt extends Base {
           chalk.cyan.bold('<space>') +
           ' to select, ' +
           'or type anything to filter the list)';
-        
+
       } else {
 
         message +=
@@ -237,7 +237,7 @@ class CheckboxPlusPrompt extends Base {
           ' to toggle all, ' +
           chalk.cyan.bold('<i>') +
           ' to invert selection)';
-        
+
       }
 
     }
@@ -255,12 +255,12 @@ class CheckboxPlusPrompt extends Base {
 
       message += '\n  ' + chalk.cyan('Searching...');
 
-    // No choices
+      // No choices
     } else if (!this.choices.length) {
 
       message += '\n  ' + chalk.yellow('No results...');
 
-    // Has choices
+      // Has choices
     } else {
 
       var choicesStr = this.renderChoices(this.choices, this.pointer);
@@ -384,12 +384,12 @@ class CheckboxPlusPrompt extends Base {
   onAllKey() {
 
     var shouldBeChecked = Boolean(
-      this.choices.find(function(choice) {
+      this.choices.find(function (choice) {
         return choice.type !== 'separator' && !choice.checked;
       })
     );
 
-    this.choices.forEach(function(choice) {
+    this.choices.forEach(function (choice) {
       if (choice.type !== 'separator') {
         choice.checked = shouldBeChecked;
       }
@@ -405,7 +405,7 @@ class CheckboxPlusPrompt extends Base {
    */
   onInverseKey() {
 
-    this.choices.forEach(function(choice) {
+    this.choices.forEach(function (choice) {
       if (choice.type !== 'separator') {
         choice.checked = !choice.checked;
       }
@@ -443,7 +443,7 @@ class CheckboxPlusPrompt extends Base {
     _.remove(this.value, _.isEqual.bind(null, choice.value));
 
     // Remove the checkedChoices with the value of the current choice
-    _.remove(this.checkedChoices, function(checkedChoice) {
+    _.remove(this.checkedChoices, function (checkedChoice) {
       return _.isEqual(choice.value, checkedChoice.value);
     });
 
@@ -484,7 +484,7 @@ class CheckboxPlusPrompt extends Base {
     var separatorOffset = 0;
 
     // Foreach choice
-    choices.forEach(function(choice, index) {
+    choices.forEach(function (choice, index) {
 
       // Is a separator
       if (choice.type === 'separator') {
@@ -530,4 +530,4 @@ class CheckboxPlusPrompt extends Base {
 
 }
 
-module.exports = CheckboxPlusPrompt;
+export default CheckboxPlusPrompt;
