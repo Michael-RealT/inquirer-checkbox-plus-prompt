@@ -26,7 +26,7 @@
     "menu"
   ],
   "scripts": {
-    "start": "yarn install && node example.js"
+    "start": "node example.js"
   },
   "type": "module",
   "author": "Mohammad Fares <faressoft.com@gmail.com>",
