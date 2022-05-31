@@ -2,7 +2,6 @@
 
 A plugin for [Inquirer](https://github.com/SBoudrias/Inquirer.js), similar to the original checkbox with extra features.
 
-[![npm](https://img.shields.io/npm/v/inquirer-checkbox-plus-prompt.svg)](https://www.npmjs.com/package/inquirer-checkbox-plus-prompt)
 [![npm](https://img.shields.io/npm/l/inquirer-checkbox-plus-prompt.svg)](https://github.com/faressoft/inquirer-checkbox-plus-prompt/blob/master/LICENSE)
 
 ![Demo](/demo.gif?raw=true)
@@ -10,7 +9,8 @@ A plugin for [Inquirer](https://github.com/SBoudrias/Inquirer.js), similar to th
 # Installation
 
 ```
-npm install -g inquirer-checkbox-plus-prompt
+yarn add https://github.com/Michael-RealT/inquirer-checkbox-plus-prompt.git
+
 ```
 
 # Usage
@@ -18,7 +18,11 @@ npm install -g inquirer-checkbox-plus-prompt
 You can name it with any name other than `checkbox-plus`, just change the string `'checkbox-plus'` to anything else.
 
 ```js
-inquirer.registerPrompt('checkbox-plus', require('inquirer-checkbox-plus-prompt'));
+import inquirer from 'inquirer';
+const { registerPrompt, prompt } = inquirer;
+import checkboxPlusPrompt from 'inquirer-checkbox-plus-prompt'
+
+inquirer.registerPrompt('checkbox-plus', checkboxPlusPrompt);
 
 inquirer.prompt({
   type: 'checkbox-plus',
@@ -41,12 +45,16 @@ The extra options that this plugin provides are:
 Check [example.js](/example.js?raw=true) for a more advanced example.
 
 ```js
-var inquirer = require('inquirer');
-var fuzzy = require('fuzzy');
+import inquirer from 'inquirer';
+const { registerPrompt, prompt } = inquirer;
 
-inquirer.registerPrompt('checkbox-plus', require('./index'));
+import fuzzy from 'fuzzy';
 
-var colors = ['red', 'green', 'blue', 'yellow'];
+import CheckboxPlusPrompt from './index.js'
+
+registerPrompt('checkbox-plus', CheckboxPlusPrompt);
+
+const colors = ['red', 'green', 'blue', 'yellow'];
 
 inquirer.prompt([{
   type: 'checkbox-plus',
@@ -56,27 +64,24 @@ inquirer.prompt([{
   highlight: true,
   searchable: true,
   default: ['yellow', 'red'],
+      validate: function (answer) {
+      if (answer.length < 1) {
+        return 'You must choose at least one topping.';
+      }
+      return true;
+    },
   source: function(answersSoFar, input) {
-
     input = input || '';
-
     return new Promise(function(resolve) {
-
-      var fuzzyResult = fuzzy.filter(input, colors);
-
-      var data = fuzzyResult.map(function(element) {
+      const fuzzyResult = fuzzy.filter(input, colors);
+      const data = fuzzyResult.map(function(element) {
         return element.original;
       });
-
       resolve(data);
-      
     });
-
   }
 }]).then(function(answers) {
-
   console.log(answers.colors);
-
 });
 ```
 
